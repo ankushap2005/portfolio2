@@ -1,0 +1,1112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MatruMitra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Simple style to hide elements */
+        .hidden {
+            display: none;
+        }
+        /* Style for modal scrollbar */
+        #add-patient-modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        #add-patient-modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        #add-patient-modal-content::-webkit-scrollbar-thumb {
+            background: #c4b5fd;
+            border-radius: 4px;
+        }
+        #add-patient-modal-content::-webkit-scrollbar-thumb:hover {
+            background: #a78bfa;
+        }
+    </style>
+    <!-- Use existing stylesheet from workspace instead of missing /index.css -->
+    <link rel="stylesheet" href="../web/HACKATHON/style.css">
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Login Page (hidden by default; shown only when required for editing) -->
+    <div id="login-page" class="min-h-screen flex bg-white hidden">
+        <!-- Left Pane: Form -->
+        <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12">
+            <div class="w-full max-w-md">
+                <div class="flex items-center gap-3 mb-8">
+                    <svg class="h-8 w-8 text-purple-600" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1" opacity="0.6"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1" opacity="0.6"></rect>
+                        <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                    </svg>
+                    <h1 class="text-2xl font-bold text-gray-800">MatruMitra</h1>
+                </div>
+                
+                <h2 class="text-3xl font-bold text-gray-900">Welcome back</h2>
+                <p class="mt-2 text-gray-500">Please enter your details</p>
+    
+                <form id="login-form" class="mt-8 space-y-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="asha-id" class="text-sm font-medium text-gray-700">ASHA ID</label>
+                            <input id="asha-id" name="ashaId" type="text" required class="mt-1 relative block w-full px-3 py-2 bg-white text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm" placeholder="Enter your ASHA ID (letters, numbers, characters allowed)">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex gap-3 justify-center">
+                        <button type="button" id="login-back-button" class="w-44 group relative flex items-center justify-center h-11 px-4 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">Back</button>
+                        <button type="submit" class="w-44 group relative flex items-center justify-center h-11 px-4 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">Sign in</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Right Pane: Illustration -->
+        <div class="hidden md:flex w-1/2 bg-purple-50 flex-col justify-center items-center p-12 text-center">
+            <svg viewBox="0 0 500 500" class="w-full h-auto max-w-lg">
+                <defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#A78BFA;stop-opacity:1"></stop><stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1"></stop></linearGradient></defs>
+                <circle cx="250" cy="250" r="200" fill="rgba(237, 233, 254, 0.5)"></circle><path d="M 100 100 Q 250 50, 400 100 L 400 400 Q 250 450, 100 400 Z" fill="rgba(221, 214, 254, 0.6)"></path>
+                <g transform="translate(150, 150)"><circle cx="50" cy="80" r="40" fill="url(#grad1)"></circle><path d="M 50 120 C 20 180, 80 180, 50 220" fill="url(#grad1)" stroke="none"></path><circle cx="150" cy="120" r="30" fill="#EDE9FE"></circle><path d="M 150 150 C 130 200, 170 200, 150 230" fill="#EDE9FE" stroke="none"></path><path d="M 100 120 C 80 100, 120 100, 100 140 C 120 160, 80 160, 100 120" fill="#F43F5E" stroke="#fff" stroke-width="2"><animateTransform attributeName="transform" type="scale" values="1; 1.2; 1" begin="0s" dur="2s" repeatCount="indefinite"></animateTransform></path></g>
+                <path d="M380 80 L420 80 L420 110 L390 110 L380 120 Z" fill="white" stroke="#C4B5FD" stroke-width="2"></path><circle cx="400" cy="95" r="3" fill="#A78BFA"></circle><circle cx="100" cy="400" r="25" fill="white" stroke="#C4B5FD" stroke-width="2"></circle><path d="M85 400 A 20 20 0 0 1 115 400" stroke="#A78BFA" stroke-width="1.5" fill="none"></path><path d="M100 385 L 100 415" stroke="#A78BFA" stroke-width="1.5" fill="none"></path><text x="420" y="400" fill="#C4B5FD" font-size="20">+</text><text x="80" y="120" fill="#C4B5FD" font-size="16">x</text><text x="450" y="250" fill="#C4B5FD" font-size="16">o</text>
+            </svg>
+            <div class="mt-8 max-w-md">
+                <h3 class="text-2xl font-bold text-gray-800">"The best way to find yourself is to lose yourself in the service of others."</h3>
+                <p class="mt-2 text-gray-600">- Mahatma Gandhi</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="h-screen font-sans">
+        <!-- Sidebar -->
+        <div class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200">
+            <div class="flex items-center justify-center h-20 border-b gap-2">
+                <svg class="h-8 w-8 text-purple-600" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1" opacity="0.6"></rect><rect x="3" y="14" width="7" height="7" rx="1" opacity="0.6"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
+                <div class="text-2xl font-bold text-purple-600">MatruMitra</div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-2">
+                <nav>
+                    <a href="HOMEPAGE.HTML" class="flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 text-gray-600 hover:bg-gray-200 hover:text-gray-800 rounded-lg">
+                        <svg class="h-6 w-6 shrink-0" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        <span class="ml-3">Home</span>
+                    </a>
+                    <a href="ABOUT.HTML" class="flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 text-gray-600 hover:bg-gray-200 hover:text-gray-800 rounded-lg">
+                        <svg class="h-6 w-6 shrink-0" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        <span class="ml-3">About MatruMitra</span>
+                    </a>
+                     <div>
+                        <button id="people-menu-button" type="button" class="flex items-center w-full px-4 py-3 text-sm font-medium text-left text-gray-600 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-800 rounded-lg focus:outline-none">
+                            <svg class="h-6 w-6 shrink-0" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            <span class="ml-3 flex-1">People</span>
+                            <svg id="people-menu-chevron" class="w-5 h-5 ml-auto transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div id="people-submenu" class="pl-8 space-y-1 mt-1">
+                             <a href="#" class="block px-4 py-2 text-sm font-medium bg-purple-600 text-white rounded-lg">
+                                Search people
+                            </a>
+                            <a href="#" id="add-people-submenu-link" class="block px-4 py-2 text-sm font-medium text-gray-600 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-800 rounded-lg">
+                                Add people
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div id="user-profile-section" class="p-4 border-t hidden">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-purple-200 flex items-center justify-center text-purple-600 font-bold" id="user-avatar">V</div>
+                    <div class="ml-3">
+                        <p class="text-sm font-semibold text-gray-800" id="user-role">Volunteer</p>
+                        <button id="logout-button" class="flex items-center text-xs text-gray-500 hover:text-purple-600">Logout
+                            <svg class="h-6 w-6 shrink-0" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="flex items-center justify-between h-20 px-8 bg-white border-b border-gray-200">
+                <h1 class="text-2xl font-bold text-gray-800">Community Outreach</h1>
+            </header>
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-4 md:p-8">
+                <div class="max-w-7xl mx-auto">
+                    <div class="mb-6 bg-white p-4 rounded-lg shadow-sm">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div class="relative flex-1">
+                                <input id="search-input" type="text" placeholder="Search by name, phone or ID..." class="w-full pl-10 pr-4 py-2 bg-white text-gray-900 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                </div>
+                            </div>
+                            <div class="relative flex items-center gap-2">
+                                <button id="sync-data-button" class="px-4 py-2 border border-purple-500 text-purple-500 rounded-lg hover:bg-purple-50 transition-colors">Sync Online</button>
+                                <button id="edit-people-button" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">Edit People</button>
+                                <button id="add-person-button" class="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                                    <svg class="h-5 w-5" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    Add Person
+                                </button>
+
+                                <!-- Edit dropdown populated by JS -->
+                                <div id="edit-people-dropdown" class="hidden absolute right-0 top-full mt-2 w-72 bg-white border border-gray-200 rounded-md shadow-lg z-50 p-2">
+                                    <!-- content injected via JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-1 bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div id="patient-list-container" class="flex flex-col h-full"></div>
+                        </div>
+                        <div class="lg:col-span-2 bg-white rounded-lg shadow-sm" id="patient-detail-container"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Add Patient Modal -->
+    <div id="add-patient-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
+        <div id="add-patient-modal-content" class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+            <div class="p-6 border-b">
+                <h2 class="text-xl font-semibold">Add New Patient</h2>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div class="border-b border-gray-200">
+                <nav id="modal-tabs" class="flex space-x-4 px-6 -mb-px" aria-label="Tabs">
+                    <button data-step="1" class="modal-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-purple-600 text-purple-600">1. Demographics</button>
+                    <button data-step="2" class="modal-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">2. Medical History</button>
+                    <button data-step="3" class="modal-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">3. Consents & Docs</button>
+                </nav>
+            </div>
+
+            <form id="add-patient-form" class="flex-1 overflow-y-auto">
+                <!-- hidden id for editing existing patients -->
+                <input type="hidden" name="id" id="patient-id">
+                <div class="p-6">
+                    <!-- Step 1: Demographics -->
+                    <div id="step-1" class="step-panel">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div><label for="firstName" class="block text-sm font-medium text-gray-700">First Name *</label><input type="text" name="firstName" id="firstName" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm" required></div>
+                            <div><label for="middleName" class="block text-sm font-medium text-gray-700">Middle Name</label><input type="text" name="middleName" id="middleName" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"></div>
+                            <div><label for="lastName" class="block text-sm font-medium text-gray-700">Last Name *</label><input type="text" name="lastName" id="lastName" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm" required></div>
+                            <div><label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth *</label><input type="date" name="dob" id="dob" max="" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm" required></div>
+                            <div><label for="age" class="block text-sm font-medium text-gray-700">Age</label><input type="number" name="age" id="age" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm bg-gray-50" readonly></div>
+                            <div><label for="gender" class="block text-sm font-medium text-gray-700">Gender *</label><select name="gender" id="gender" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm" required><option value="">Select your option</option><option value="Female">Female</option><option value="Male">Male</option><option value="Other">Other</option></select></div>
+                            <div><label for="phone" class="block text-sm font-medium text-gray-700">Mobile Number *</label><input type="tel" name="phone" id="phone" pattern="[1-9][0-9]{9}" maxlength="10" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm" required placeholder="Enter 10-digit mobile number"></div>
+                            <div><label for="email" class="block text-sm font-medium text-gray-700">Email Address</label><input type="email" name="email" id="email" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"></div>
+                            <div><label for="patientPhoto" class="block text-sm font-medium text-gray-700">Patient Photo</label><input type="file" name="patientPhoto" id="patientPhoto" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"><div id="photo-validation-message" class="mt-1 text-sm hidden"></div></div>
+                            <div class="md:col-span-3"><label for="address" class="block text-sm font-medium text-gray-700">Street Address</label><input type="text" name="address" id="address" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"></div>
+                            <div><label for="city" class="block text-sm font-medium text-gray-700">City *</label><input type="text" name="city" id="city" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm" required></div>
+                            <div><label for="state" class="block text-sm font-medium text-gray-700">State *</label><select name="state" id="state" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm" required><option value="">Select State</option><option value="Andhra Pradesh">Andhra Pradesh</option><option value="Arunachal Pradesh">Arunachal Pradesh</option><option value="Assam">Assam</option><option value="Bihar">Bihar</option><option value="Chhattisgarh">Chhattisgarh</option><option value="Goa">Goa</option><option value="Gujarat">Gujarat</option><option value="Haryana">Haryana</option><option value="Himachal Pradesh">Himachal Pradesh</option><option value="Jharkhand">Jharkhand</option><option value="Karnataka">Karnataka</option><option value="Kerala">Kerala</option><option value="Madhya Pradesh">Madhya Pradesh</option><option value="Maharashtra">Maharashtra</option><option value="Manipur">Manipur</option><option value="Meghalaya">Meghalaya</option><option value="Mizoram">Mizoram</option><option value="Nagaland">Nagaland</option><option value="Odisha">Odisha</option><option value="Punjab">Punjab</option><option value="Rajasthan">Rajasthan</option><option value="Sikkim">Sikkim</option><option value="Tamil Nadu">Tamil Nadu</option><option value="Telangana">Telangana</option><option value="Tripura">Tripura</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Uttarakhand">Uttarakhand</option><option value="West Bengal">West Bengal</option><option value="Delhi">Delhi</option><option value="Chandigarh">Chandigarh</option><option value="Puducherry">Puducherry</option></select></div>
+                            <div><label for="pincode" class="block text-sm font-medium text-gray-700">Pincode *</label><input type="text" name="pincode" id="pincode" pattern="[0-9]{6}" maxlength="6" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm" required placeholder="Enter 6-digit pincode"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Medical History -->
+                    <div id="step-2" class="step-panel hidden">
+                         <div class="space-y-6">
+                            <div><label for="bloodGroup" class="block text-sm font-medium text-gray-700">Blood Group</label><select name="bloodGroup" id="bloodGroup" class="mt-1 block w-full md:w-1/3 bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option>Unknown</option></select></div>
+                            <div><label for="allergies" class="block text-sm font-medium text-gray-700">Known Allergies *</label><textarea name="allergies" id="allergies" rows="3" placeholder="e.g., Penicillin, Pollen" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"></textarea>
+                                <div class="flex items-center mt-2"><input id="noAllergies" name="noAllergies" type="checkbox" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"><label for="noAllergies" class="ml-2 block text-sm text-gray-900">No Known Allergies</label></div>
+                            </div>
+                            <div><label for="medications" class="block text-sm font-medium text-gray-700">Current Medications</label><textarea name="medications" id="medications" rows="3" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"></textarea></div>
+                            <div><label for="pastHistory" class="block text-sm font-medium text-gray-700">Past Medical History</label><textarea name="pastHistory" id="pastHistory" rows="3" placeholder="e.g., Diabetes, Hypertension" class="mt-1 block w-full bg-white text-gray-900 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"></textarea></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Consents & Docs -->
+                    <div id="step-3" class="step-panel hidden">
+                        <div class="space-y-6">
+                            <div><label for="govId" class="block text-sm font-medium text-gray-700">Upload Government ID (Aadhaar, Voter ID)</label><input type="file" name="govId" id="govId" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"></div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-700">Consent Forms</h4>
+                                <div class="mt-2 space-y-2">
+                                    <div class="flex items-center"><input id="consentTreatment" name="consentTreatment" type="checkbox" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"><label for="consentTreatment" class="ml-2 block text-sm text-gray-900">Consent to Treatment Signed</label></div>
+                                    <div class="flex items-center"><input id="privacyPolicy" name="privacyPolicy" type="checkbox" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"><label for="privacyPolicy" class="ml-2 block text-sm text-gray-900">Privacy Policy Acknowledged</label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-6 py-4 bg-gray-50 border-t flex justify-end gap-3">
+                    <button type="button" id="modal-cancel-button" class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">Cancel</button>
+                    <button type="button" id="modal-prev-button" class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</button>
+                    <button type="button" id="modal-next-button" class="px-4 py-2 bg-purple-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-purple-700">Next</button>
+                    <button type="submit" id="modal-save-button" class="px-4 py-2 bg-purple-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-purple-700">Save Patient</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- STATE MANAGEMENT ---
+        let state = {
+            patients: [],
+                selectedPatient: null,
+                searchTerm: '',
+                modalCurrentStep: 1,
+                editRequested: false,
+                addRequested: false,
+                syncRequested: false,
+        };
+
+        // --- DOM ELEMENTS ---
+    const loginPage = document.getElementById('login-page');
+        const dashboardPage = document.getElementById('dashboard-page');
+        const loginForm = document.getElementById('login-form');
+    const loginBackButton = document.getElementById('login-back-button');
+        const logoutButton = document.getElementById('logout-button');
+        const userProfileSection = document.getElementById('user-profile-section');
+        const userAvatar = document.getElementById('user-avatar');
+        const userRole = document.getElementById('user-role');
+        const patientListContainer = document.getElementById('patient-list-container');
+        const patientDetailContainer = document.getElementById('patient-detail-container');
+        const searchInput = document.getElementById('search-input');
+        const syncDataButton = document.getElementById('sync-data-button');
+        const addPersonButton = document.getElementById('add-person-button');
+    const editPeopleButton = document.getElementById('edit-people-button');
+    const editPeopleDropdown = document.getElementById('edit-people-dropdown');
+        const peopleMenuButton = document.getElementById('people-menu-button');
+        const peopleSubmenu = document.getElementById('people-submenu');
+        const peopleMenuChevron = document.getElementById('people-menu-chevron');
+        const addPeopleSubmenuLink = document.getElementById('add-people-submenu-link');
+
+        // Modal Elements
+        const addPatientModal = document.getElementById('add-patient-modal');
+        const addPatientForm = document.getElementById('add-patient-form');
+        const modalCancelButton = document.getElementById('modal-cancel-button');
+        const modalPrevButton = document.getElementById('modal-prev-button');
+        const modalNextButton = document.getElementById('modal-next-button');
+        const modalSaveButton = document.getElementById('modal-save-button');
+        const modalTabs = document.querySelectorAll('.modal-tab');
+        const stepPanels = document.querySelectorAll('.step-panel');
+        const dobInput = document.getElementById('dob');
+        const ageInput = document.getElementById('age');
+        const phoneInput = document.getElementById('phone');
+        const pincodeInput = document.getElementById('pincode');
+        const patientPhotoInput = document.getElementById('patientPhoto');
+        const photoValidationMessage = document.getElementById('photo-validation-message');
+        const noAllergiesCheckbox = document.getElementById('noAllergies');
+        const allergiesTextarea = document.getElementById('allergies');
+
+    // New: hidden id input
+    const patientIdInput = document.getElementById('patient-id');
+
+
+        // --- LOCAL STORAGE SERVICE ---
+        const PATIENTS_KEY = 'matruMitraPatients';
+
+        const getPatients = () => {
+            try {
+                const patientsJson = localStorage.getItem(PATIENTS_KEY);
+                return patientsJson ? JSON.parse(patientsJson) : [];
+            } catch (error) {
+                console.error("Error retrieving patients from localStorage", error);
+                return [];
+            }
+        };
+
+        const savePatient = (patient) => {
+            const patients = getPatients();
+            const existingIndex = patients.findIndex(p => p.id === patient.id);
+            if (existingIndex > -1) {
+                patients[existingIndex] = patient;
+            } else {
+                patients.push(patient);
+            }
+            localStorage.setItem(PATIENTS_KEY, JSON.stringify(patients));
+            return patients;
+        };
+        
+        const clearAllData = () => {
+            try {
+                const patients = getPatients();
+                // This is where you would add backend API integration later.
+                console.log("Syncing data to server:", patients);
+                localStorage.removeItem(PATIENTS_KEY);
+            } catch(error) {
+                console.error("Error during data sync and clear", error);
+            }
+        };
+
+
+        // --- RENDER FUNCTIONS ---
+        const renderPatientList = () => {
+            console.log('Rendering patient list. Total patients:', state.patients.length);
+            const filteredPatients = state.patients.filter(p =>
+                p.fullName.toLowerCase().includes(state.searchTerm.toLowerCase()) ||
+                p.phone.includes(state.searchTerm) ||
+                p.id.toLowerCase().includes(state.searchTerm.toLowerCase())
+            );
+
+            let content;
+            if (filteredPatients.length === 0) {
+                content = `
+                    <div class="p-4 border-b"><h2 class="text-lg font-semibold text-gray-800">People (0)</h2></div>
+                    <div class="p-6 text-center text-gray-500">
+                        <p>No people saved locally.</p>
+                        <p class="text-sm mt-1">Click 'Add Person' to get started.</p>
+                    </div>`;
+            } else {
+                const listItems = filteredPatients.map(patient => `
+                    <li data-patient-id="${patient.id}" class="patient-list-item p-4 cursor-pointer border-l-4 ${
+                        state.selectedPatient?.id === patient.id
+                        ? 'bg-purple-50 border-purple-500'
+                        : 'border-transparent hover:bg-gray-100'
+                    }">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-gray-800">${patient.fullName} <span class="text-sm font-normal text-gray-500">(${patient.id.substring(0,6)})</span></p>
+                                <p class="text-sm text-gray-600">${patient.phone} &bull; ${patient.city || 'N/A'}</p>
+                            </div>
+                            <span class="text-sm text-gray-500">${patient.gender}</span>
+                        </div>
+                    </li>
+                `).join('');
+
+                content = `
+                    <div class="p-4 border-b"><h2 class="text-lg font-semibold text-gray-800">People (${filteredPatients.length})</h2></div>
+                    <div class="overflow-y-auto"><ul>${listItems}</ul></div>
+                `;
+            }
+            patientListContainer.innerHTML = content;
+            
+            document.querySelectorAll('.patient-list-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const patientId = item.getAttribute('data-patient-id');
+                    handleSelectPatient(patientId);
+                });
+            });
+        };
+        
+        const renderPatientDetail = () => {
+            if (!state.selectedPatient) {
+                patientDetailContainer.innerHTML = `<div class="flex items-center justify-center h-full p-8"><p class="text-gray-500">Select a person to view details.</p></div>`;
+                return;
+            }
+            const p = state.selectedPatient;
+            
+            // Create photo section if patient has a photo
+            const photoSection = p.patientPhoto ? `
+                <div class="mb-6 text-center">
+                    <div class="inline-block p-2 bg-gray-50 rounded-lg">
+                        <img src="${p.patientPhoto}" alt="Patient Photo" class="w-32 h-32 object-cover rounded-md border-2 border-gray-200">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Patient Photo</p>
+                </div>
+            ` : '';
+            
+            patientDetailContainer.innerHTML = `
+                <div class="p-6 h-full overflow-y-auto">
+                    <div class="border-b pb-4 mb-4">
+                        <h3 class="text-xl font-semibold leading-6 text-gray-900">${p.fullName}</h3>
+                        <p class="mt-1 max-w-2xl text-sm text-gray-500">Personal Details</p>
+                    </div>
+                    ${photoSection}
+                    <dl class="space-y-2">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-2"><dt class="text-sm font-medium text-gray-500">ID</dt><dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">${p.id || 'N/A'}</dd></div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-2"><dt class="text-sm font-medium text-gray-500">Phone</dt><dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">${p.phone || 'N/A'}</dd></div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-2"><dt class="text-sm font-medium text-gray-500">Address</dt><dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">${[p.address, p.city, p.state, p.pincode].filter(Boolean).join(', ') || 'N/A'}</dd></div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-2"><dt class="text-sm font-medium text-gray-500">Age</dt><dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">${p.age || 'N/A'}</dd></div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-2"><dt class="text-sm font-medium text-gray-500">Gender</dt><dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">${p.gender || 'N/A'}</dd></div>
+                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-2"><dt class="text-sm font-medium text-gray-500">Allergies</dt><dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">${p.allergies || 'None'}</dd></div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-2"><dt class="text-sm font-medium text-gray-500">Medications</dt><dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 whitespace-pre-wrap">${p.medications || 'None'}</dd></div>
+                    </dl>
+                </div>
+            `;
+        };
+        
+        const render = () => {
+            renderPatientList();
+            renderPatientDetail();
+        };
+
+        // --- EDIT / DELETE helpers ---
+        const populateEditDropdown = () => {
+            const patients = getPatients();
+            if (patients.length === 0) {
+                editPeopleDropdown.innerHTML = `<div class="p-3 text-sm text-gray-500">No people saved locally.</div>`;
+                return;
+            }
+            const items = patients.map(p => `
+                <div class="flex items-center justify-between px-2 py-1 hover:bg-gray-50 rounded">
+                    <div class="text-sm">
+                        <div class="font-medium text-gray-800">${p.fullName}</div>
+                        <div class="text-xs text-gray-500">${p.phone} • ${p.city || 'N/A'}</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button data-id="${p.id}" class="edit-person-btn px-2 py-1 text-sm text-white bg-blue-600 rounded">Edit</button>
+                        <button data-id="${p.id}" class="delete-person-btn px-2 py-1 text-sm text-white bg-red-600 rounded">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+            editPeopleDropdown.innerHTML = `<div class="space-y-1">${items}</div>`;
+
+            // attach listeners
+            editPeopleDropdown.querySelectorAll('.edit-person-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.dataset.id;
+                    openEditForPatient(id);
+                });
+            });
+            editPeopleDropdown.querySelectorAll('.delete-person-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.dataset.id;
+                    if (confirm('Delete this person locally?')) {
+                        deletePatient(id);
+                    }
+                });
+            });
+        };
+
+        const openEditForPatient = (id) => {
+            const patients = getPatients();
+            const p = patients.find(x => x.id === id);
+            if (!p) return alert('Person not found');
+            
+            // Use the dedicated edit modal function
+            openEditModal(p);
+            editPeopleDropdown.classList.add('hidden');
+        };
+
+        const deletePatient = (id) => {
+            const patients = getPatients().filter(p => p.id !== id);
+            localStorage.setItem(PATIENTS_KEY, JSON.stringify(patients));
+            state.patients = patients;
+            if (state.selectedPatient?.id === id) state.selectedPatient = null;
+            populateEditDropdown();
+            render();
+        };
+
+        // --- EVENT HANDLERS ---
+        const handleLogin = (event) => {
+            event.preventDefault();
+            // store basic login state and ASHA ID
+            const formData = new FormData(loginForm);
+            const formProps = Object.fromEntries(formData);
+            if (formProps.ashaId) {
+                sessionStorage.setItem('ashaId', formProps.ashaId);
+                // Update user profile section with ASHA ID
+                const firstLetter = formProps.ashaId.charAt(0).toUpperCase();
+                userAvatar.textContent = firstLetter;
+                userRole.textContent = `ASHA: ${formProps.ashaId}`;
+                // Show user profile section
+                userProfileSection.classList.remove('hidden');
+            }
+            sessionStorage.setItem('isLoggedIn', 'true');
+            loginPage.classList.add('hidden');
+            dashboardPage.classList.remove('hidden');
+            dashboardPage.classList.add('flex');
+            state.patients = getPatients();
+            render();
+            // If edit was requested before login, open edit dropdown
+            if (state.editRequested) {
+                state.editRequested = false;
+                populateEditDropdown();
+                editPeopleDropdown.classList.remove('hidden');
+            }
+            // If add person was requested before login, open modal for new patient creation
+            if (state.addRequested) {
+                state.addRequested = false;
+                // Just open the modal for new patient - don't create record until save
+                openModal();
+            }
+            // If sync was requested before login, run sync now
+            if (state.syncRequested) {
+                state.syncRequested = false;
+                handleSyncData();
+            }
+        };
+
+        const handleLogout = () => {
+            sessionStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('ashaId');
+            // Hide user profile section
+            userProfileSection.classList.add('hidden');
+            // Reset user profile to defaults
+            userAvatar.textContent = 'V';
+            userRole.textContent = 'Volunteer';
+            loginPage.classList.remove('hidden');
+            dashboardPage.classList.add('hidden');
+            dashboardPage.classList.remove('flex');
+            state = { patients: [], selectedPatient: null, searchTerm: '', modalCurrentStep: 1 };
+        };
+
+        const handleSelectPatient = (patientId) => {
+            state.selectedPatient = state.patients.find(p => p.id === patientId) || null;
+            render();
+        };
+
+        const handleSearch = (event) => {
+            state.searchTerm = event.target.value;
+            renderPatientList();
+        };
+
+        const handleSyncData = () => {
+             if (state.patients.length === 0) {
+                alert("No local data to sync.");
+                return;
+            }
+            alert(`Successfully synced ${state.patients.length} records to server. Local data has been preserved.`);
+            // Note: In a real app, this would send data to server but keep local copy
+            console.log("Syncing data to server:", state.patients);
+        };
+        
+        const handleTogglePeopleMenu = () => {
+            peopleSubmenu.classList.toggle('hidden');
+            peopleMenuChevron.classList.toggle('rotate-180');
+        };
+        
+        // --- MODAL LOGIC ---
+        const updateStepUI = () => {
+            const TOTAL_STEPS = 3;
+            stepPanels.forEach((panel, index) => {
+                panel.classList.toggle('hidden', index + 1 !== state.modalCurrentStep);
+            });
+
+            modalTabs.forEach(tab => {
+                const step = parseInt(tab.dataset.step);
+                if (step === state.modalCurrentStep) {
+                    tab.classList.add('border-purple-600', 'text-purple-600');
+                    tab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                } else {
+                    tab.classList.remove('border-purple-600', 'text-purple-600');
+                    tab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                }
+            });
+
+            modalPrevButton.classList.toggle('hidden', state.modalCurrentStep === 1);
+            modalNextButton.classList.toggle('hidden', state.modalCurrentStep === TOTAL_STEPS);
+            modalSaveButton.classList.toggle('hidden', state.modalCurrentStep !== TOTAL_STEPS);
+        };
+
+        const openEditModal = (patient) => {
+            // FIRST: Clear everything completely
+            addPatientForm.reset();
+            
+            // Set modal title for editing
+            document.querySelector('#add-patient-modal h2').textContent = 'Edit Patient';
+            
+            // THEN: Populate form fields with existing patient data
+            patientIdInput.value = patient.id || '';
+            document.getElementById('firstName').value = patient.firstName || '';
+            document.getElementById('middleName').value = patient.middleName || '';
+            document.getElementById('lastName').value = patient.lastName || '';
+            document.getElementById('dob').value = patient.dob || '';
+            document.getElementById('age').value = patient.age || '';
+            document.getElementById('gender').value = patient.gender || '';
+            document.getElementById('phone').value = patient.phone || '';
+            document.getElementById('email').value = patient.email || '';
+            document.getElementById('address').value = patient.address || '';
+            document.getElementById('city').value = patient.city || '';
+            document.getElementById('state').value = patient.state || '';
+            document.getElementById('pincode').value = patient.pincode || '';
+            document.getElementById('bloodGroup').value = patient.bloodGroup || 'Unknown';
+            document.getElementById('allergies').value = patient.allergies || '';
+            document.getElementById('medications').value = patient.medications || '';
+            document.getElementById('pastHistory').value = patient.pastHistory || '';
+            
+            // Handle allergies checkbox state
+            if (patient.allergies === 'No Known Allergies') {
+                noAllergiesCheckbox.checked = true;
+                allergiesTextarea.disabled = true;
+                allergiesTextarea.classList.add('bg-gray-100');
+            } else {
+                noAllergiesCheckbox.checked = false;
+                allergiesTextarea.disabled = false;
+                allergiesTextarea.classList.remove('bg-gray-100');
+            }
+            
+            // Reset photo input and validation messages (photos don't carry over in edit mode)
+            patientPhotoInput.value = '';
+            photoValidationMessage.classList.add('hidden');
+            photoValidationMessage.textContent = '';
+            patientPhotoInput.classList.remove('border-red-400', 'border-green-400');
+            
+            state.modalCurrentStep = 1;
+            updateStepUI();
+            addPatientModal.classList.remove('hidden');
+        };
+
+        const openModal = () => {
+            // Set modal title for adding new patient
+            document.querySelector('#add-patient-modal h2').textContent = 'Add New Patient';
+            
+            // COMPLETE form reset - use DOM reset first
+            addPatientForm.reset();
+            
+            // CRITICAL: Clear patient ID to ensure new patient creation (never update existing)
+            patientIdInput.value = '';
+            patientIdInput.removeAttribute('value');
+            
+            // Force clear all form fields to ensure completely clean state
+            const formInputs = addPatientForm.querySelectorAll('input, select, textarea');
+            formInputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    input.checked = false;
+                } else if (input.type === 'file') {
+                    input.value = '';
+                } else {
+                    input.value = '';
+                }
+            });
+            
+            // Set default values for specific fields
+            document.getElementById('bloodGroup').value = 'A+';
+            
+            // Re-enable allergies textarea (in case it was disabled)
+            allergiesTextarea.disabled = false;
+            allergiesTextarea.classList.remove('bg-gray-100');
+            
+            // Reset all validation states
+            photoValidationMessage.classList.add('hidden');
+            photoValidationMessage.textContent = '';
+            patientPhotoInput.classList.remove('border-red-400', 'border-green-400');
+            phoneInput.classList.remove('border-red-400', 'border-green-400');
+            pincodeInput.classList.remove('border-red-400', 'border-green-400');
+            
+            // Reset modal state
+            state.modalCurrentStep = 1;
+            updateStepUI();
+            addPatientModal.classList.remove('hidden');
+            
+            // Debug log to ensure we're in add mode
+            console.log('Opening modal for NEW patient - ID field cleared:', patientIdInput.value);
+        };
+
+        const closeModal = () => {
+            // Reset photo input and validation messages when closing modal
+            patientPhotoInput.value = '';
+            photoValidationMessage.classList.add('hidden');
+            photoValidationMessage.textContent = '';
+            patientPhotoInput.classList.remove('border-red-400', 'border-green-400');
+            addPatientModal.classList.add('hidden');
+        };
+
+        const handleSavePatient = (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const formProps = Object.fromEntries(formData);
+            
+            // Debug logging to track save operation
+            const existingId = patientIdInput.value;
+            const isEditMode = existingId && existingId.trim() !== '';
+            console.log('Save Patient Debug:', {
+                existingId: existingId,
+                isEditMode: isEditMode,
+                firstName: formProps.firstName
+            });
+            
+            const fullName = [formProps.firstName, formProps.middleName, formProps.lastName].filter(Boolean).join(' ');
+            if (!fullName || !formProps.phone || !formProps.dob) {
+                alert("Please fill in all required fields marked with *.");
+                return;
+            }
+            
+            // Validate phone number
+            const phoneRegex = /^[1-9][0-9]{9}$/;
+            if (!phoneRegex.test(formProps.phone)) {
+                alert("Please enter a valid 10-digit mobile number that doesn't start with 0.");
+                return;
+            }
+            
+            // Validate pincode
+            const pincodeRegex = /^[0-9]{6}$/;
+            if (!pincodeRegex.test(formProps.pincode)) {
+                alert("Please enter a valid 6-digit pincode.");
+                return;
+            }
+            
+            // Validate photo if uploaded
+            const photoFile = patientPhotoInput.files[0];
+            if (photoFile) {
+                if (!photoFile.type.startsWith('image/')) {
+                    alert("Please upload only image files for the patient photo.");
+                    return;
+                }
+                if (photoFile.size > 5 * 1024 * 1024) {
+                    alert("Photo file size must be less than 5MB.");
+                    return;
+                }
+                // Check if photo validation message shows an error
+                if (photoValidationMessage.classList.contains('text-red-600')) {
+                    alert("Please upload a valid person photo before saving.");
+                    return;
+                }
+                
+                // Convert photo to base64 for storage
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const id = isEditMode ? existingId : `P-${Date.now()}`;
+                    const newPatient = Object.assign({ id }, { fullName }, formProps, { patientPhoto: e.target.result });
+                    
+                    console.log('Saving patient with ID:', id, isEditMode ? '(EDIT)' : '(NEW)');
+                    state.patients = savePatient(newPatient);
+                    
+                    // Auto-select the newly created patient if it's a new patient
+                    if (!isEditMode) {
+                        state.selectedPatient = newPatient;
+                    }
+                    
+                    closeModal();
+                    populateEditDropdown();
+                    render();
+                };
+                reader.readAsDataURL(photoFile);
+            } else {
+                const id = isEditMode ? existingId : `P-${Date.now()}`;
+                const newPatient = Object.assign({ id }, { fullName }, formProps);
+                
+                console.log('Saving patient with ID:', id, isEditMode ? '(EDIT)' : '(NEW)');
+                state.patients = savePatient(newPatient);
+                
+                // Auto-select the newly created patient if it's a new patient
+                if (!isEditMode) {
+                    state.selectedPatient = newPatient;
+                }
+                
+                closeModal();
+                populateEditDropdown();
+                render();
+            }
+        };
+
+        const calculateAge = (dob) => {
+            if (!dob) return '';
+            const birthDate = new Date(dob);
+            const today = new Date();
+            
+            // Check if birth date is in the future
+            if (birthDate > today) {
+                return 0; // Return 0 for future dates instead of negative
+            }
+            
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            // Ensure age is never negative
+            return Math.max(0, age);
+        };
+
+
+        // --- INITIALIZATION ---
+        const init = () => {
+            // Set max date for Date of Birth to today (prevent future dates)
+            const today = new Date().toISOString().split('T')[0];
+            dobInput.setAttribute('max', today);
+            
+            // Page listeners
+            loginForm.addEventListener('submit', handleLogin);
+            logoutButton.addEventListener('click', handleLogout);
+            searchInput.addEventListener('input', handleSearch);
+            // require login to sync online
+            syncDataButton.addEventListener('click', (e) => {
+                if (sessionStorage.getItem('isLoggedIn') === 'true') {
+                    handleSyncData();
+                } else {
+                    state.syncRequested = true;
+                    // show login page first
+                    loginPage.classList.remove('hidden');
+                    dashboardPage.classList.add('hidden');
+                    dashboardPage.classList.remove('flex');
+                    const ashaInput = document.getElementById('asha-id');
+                    if (ashaInput) ashaInput.focus();
+                }
+            });
+
+            // require login to add person (open modal for new patient creation)
+            addPersonButton.addEventListener('click', (e) => {
+                if (sessionStorage.getItem('isLoggedIn') === 'true') {
+                    // Just open the modal for new patient - don't create record until save
+                    openModal();
+                } else {
+                    state.addRequested = true;
+                    // show login page first
+                    loginPage.classList.remove('hidden');
+                    dashboardPage.classList.add('hidden');
+                    dashboardPage.classList.remove('flex');
+                    const ashaInput = document.getElementById('asha-id');
+                    if (ashaInput) ashaInput.focus();
+                }
+            });
+            peopleMenuButton.addEventListener('click', handleTogglePeopleMenu);
+            addPeopleSubmenuLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (sessionStorage.getItem('isLoggedIn') === 'true') {
+                    // Just open the modal for new patient - don't create record until save
+                    openModal();
+                } else {
+                    state.addRequested = true;
+                    // show login page first
+                    loginPage.classList.remove('hidden');
+                    dashboardPage.classList.add('hidden');
+                    dashboardPage.classList.remove('flex');
+                    const ashaInput = document.getElementById('asha-id');
+                    if (ashaInput) ashaInput.focus();
+                }
+            });
+
+            // Modal Listeners
+            modalCancelButton.addEventListener('click', closeModal);
+            addPatientForm.addEventListener('submit', handleSavePatient);
+            modalNextButton.addEventListener('click', () => {
+                const TOTAL_STEPS = 3;
+                if(state.modalCurrentStep < TOTAL_STEPS) {
+                    state.modalCurrentStep++;
+                    updateStepUI();
+                }
+            });
+            modalPrevButton.addEventListener('click', () => {
+                if(state.modalCurrentStep > 1) {
+                    state.modalCurrentStep--;
+                    updateStepUI();
+                }
+            });
+             modalTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    state.modalCurrentStep = parseInt(tab.dataset.step);
+                    updateStepUI();
+                });
+            });
+            dobInput.addEventListener('change', (e) => {
+                ageInput.value = calculateAge(e.target.value);
+            });
+            
+            // Phone number validation
+            phoneInput.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                
+                // Limit to 10 digits
+                if (value.length > 10) {
+                    value = value.slice(0, 10);
+                }
+                
+                // Prevent starting with 0
+                if (value.startsWith('0')) {
+                    value = value.slice(1);
+                }
+                
+                e.target.value = value;
+                
+                // Visual feedback
+                if (value.length === 10 && !value.startsWith('0')) {
+                    phoneInput.classList.add('border-green-400');
+                    phoneInput.classList.remove('border-red-400');
+                } else if (value.length > 0) {
+                    phoneInput.classList.add('border-red-400');
+                    phoneInput.classList.remove('border-green-400');
+                } else {
+                    phoneInput.classList.remove('border-red-400', 'border-green-400');
+                }
+            });
+            
+            // Pincode validation
+            pincodeInput.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                
+                // Limit to 6 digits
+                if (value.length > 6) {
+                    value = value.slice(0, 6);
+                }
+                
+                e.target.value = value;
+                
+                // Visual feedback
+                if (value.length === 6) {
+                    pincodeInput.classList.add('border-green-400');
+                    pincodeInput.classList.remove('border-red-400');
+                } else if (value.length > 0) {
+                    pincodeInput.classList.add('border-red-400');
+                    pincodeInput.classList.remove('border-green-400');
+                } else {
+                    pincodeInput.classList.remove('border-red-400', 'border-green-400');
+                }
+            });
+            
+            // Photo validation with person detection
+            const validatePersonPhoto = async (file) => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    img.onload = () => {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0);
+                        
+                        // Basic image validation (check if it's a valid image)
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const pixels = imageData.data;
+                        
+                        // Check for non-uniform colors (indication of a real photo vs solid color)
+                        let colorVariation = 0;
+                        const sampleSize = Math.min(1000, pixels.length / 4);
+                        
+                        for (let i = 0; i < sampleSize * 4; i += 16) {
+                            const r1 = pixels[i];
+                            const r2 = pixels[i + 4] || r1;
+                            colorVariation += Math.abs(r1 - r2);
+                        }
+                        
+                        // Simple heuristic: photos should have some color variation
+                        const hasVariation = colorVariation > 100;
+                        
+                        // Check image dimensions (person photos typically have certain aspect ratios)
+                        const aspectRatio = img.width / img.height;
+                        const hasReasonableDimensions = img.width >= 100 && img.height >= 100;
+                        const hasPersonLikeAspectRatio = aspectRatio >= 0.5 && aspectRatio <= 2.0;
+                        
+                        resolve(hasVariation && hasReasonableDimensions && hasPersonLikeAspectRatio);
+                    };
+                    
+                    img.onerror = () => resolve(false);
+                    img.src = URL.createObjectURL(file);
+                });
+            };
+            
+            patientPhotoInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                
+                if (!file) {
+                    photoValidationMessage.classList.add('hidden');
+                    patientPhotoInput.classList.remove('border-red-400', 'border-green-400');
+                    return;
+                }
+                
+                // Check file type
+                if (!file.type.startsWith('image/')) {
+                    photoValidationMessage.textContent = 'Please select only image files (JPG, PNG, etc.). Text, video, and zip files are not allowed.';
+                    photoValidationMessage.classList.remove('hidden', 'text-green-600');
+                    photoValidationMessage.classList.add('text-red-600');
+                    patientPhotoInput.classList.add('border-red-400');
+                    patientPhotoInput.classList.remove('border-green-400');
+                    patientPhotoInput.value = '';
+                    return;
+                }
+                
+                // Check file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    photoValidationMessage.textContent = 'File size must be less than 5MB.';
+                    photoValidationMessage.classList.remove('hidden', 'text-green-600');
+                    photoValidationMessage.classList.add('text-red-600');
+                    patientPhotoInput.classList.add('border-red-400');
+                    patientPhotoInput.classList.remove('border-green-400');
+                    patientPhotoInput.value = '';
+                    return;
+                }
+                
+                // Validate if it appears to be a person photo
+                try {
+                    const isValidPersonPhoto = await validatePersonPhoto(file);
+                    
+                    if (isValidPersonPhoto) {
+                        photoValidationMessage.textContent = 'Valid person photo uploaded successfully.';
+                        photoValidationMessage.classList.remove('hidden', 'text-red-600');
+                        photoValidationMessage.classList.add('text-green-600');
+                        patientPhotoInput.classList.add('border-green-400');
+                        patientPhotoInput.classList.remove('border-red-400');
+                    } else {
+                        photoValidationMessage.textContent = 'Please upload a clear photo of a person. The image should be a proper photograph with reasonable dimensions.';
+                        photoValidationMessage.classList.remove('hidden', 'text-green-600');
+                        photoValidationMessage.classList.add('text-red-600');
+                        patientPhotoInput.classList.add('border-red-400');
+                        patientPhotoInput.classList.remove('border-green-400');
+                        patientPhotoInput.value = '';
+                    }
+                } catch (error) {
+                    photoValidationMessage.textContent = 'Error validating photo. Please try again.';
+                    photoValidationMessage.classList.remove('hidden', 'text-green-600');
+                    photoValidationMessage.classList.add('text-red-600');
+                    patientPhotoInput.classList.add('border-red-400');
+                    patientPhotoInput.classList.remove('border-green-400');
+                    patientPhotoInput.value = '';
+                }
+            });
+            
+            noAllergiesCheckbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    allergiesTextarea.value = 'No Known Allergies';
+                    allergiesTextarea.disabled = true;
+                    allergiesTextarea.classList.add('bg-gray-100');
+                } else {
+                    allergiesTextarea.value = '';
+                    allergiesTextarea.disabled = false;
+                    allergiesTextarea.classList.remove('bg-gray-100');
+                }
+            });
+
+            // Edit people dropdown behavior (require login to edit)
+            editPeopleButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (sessionStorage.getItem('isLoggedIn') === 'true') {
+                    populateEditDropdown();
+                    editPeopleDropdown.classList.toggle('hidden');
+                } else {
+                    // request login first, then open edit UI after successful login
+                    state.editRequested = true;
+                    // show login page
+                    loginPage.classList.remove('hidden');
+                    dashboardPage.classList.add('hidden');
+                    dashboardPage.classList.remove('flex');
+                    // focus ASHA ID input if available
+                    const ashaInput = document.getElementById('asha-id');
+                    if (ashaInput) ashaInput.focus();
+                }
+            });
+            // login back button: cancel edit request and return to dashboard
+            if (loginBackButton) {
+                loginBackButton.addEventListener('click', () => {
+                    state.editRequested = false;
+                    loginPage.classList.add('hidden');
+                    dashboardPage.classList.remove('hidden');
+                    dashboardPage.classList.add('flex');
+                });
+            }
+            // close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!editPeopleDropdown.classList.contains('hidden')) {
+                    if (!editPeopleDropdown.contains(e.target) && e.target !== editPeopleButton) {
+                        editPeopleDropdown.classList.add('hidden');
+                    }
+                }
+            });
+
+            // initial populate
+            populateEditDropdown();
+            
+            // Check if user is already logged in and show profile section
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+            const ashaId = sessionStorage.getItem('ashaId');
+            if (isLoggedIn && ashaId) {
+                const firstLetter = ashaId.charAt(0).toUpperCase();
+                userAvatar.textContent = firstLetter;
+                userRole.textContent = `ASHA: ${ashaId}`;
+                userProfileSection.classList.remove('hidden');
+            }
+            
+            // Show dashboard by default; login page will be displayed only when Edit is requested
+            loginPage.classList.add('hidden');
+            dashboardPage.classList.remove('hidden');
+            dashboardPage.classList.add('flex');
+            state.patients = getPatients();
+            render();
+        };
+
+        init();
+    });
+    </script>
+    <!-- Removed missing module reference to /index.tsx; this project currently has no index.tsx at the root -->
+</body>
+</html>

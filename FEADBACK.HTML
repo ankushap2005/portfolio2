@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MatruMitra Feedback</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f9d3e3, #f6f9fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .feedback-container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 550px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #e6398e;
+      margin-bottom: 15px;
+    }
+
+    p {
+      color: #555;
+      font-size: 15px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      text-align: left;
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #e6398e;
+      outline: none;
+    }
+
+    .rating {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+      font-size: 25px;
+    }
+
+    .rating span {
+      cursor: pointer;
+      transition: transform 0.2s;
+      opacity: 0.5;
+    }
+
+    .rating span.active {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+
+    button {
+      background-color: #e6398e;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #c92473;
+    }
+
+    .thank-you {
+      display: none;
+      text-align: center;
+    }
+
+    .thank-you h3 {
+      color: #e6398e;
+      font-size: 22px;
+    }
+  </style>
+</head>
+<body>
+  <div class="feedback-container">
+    <h2>💬 MatruMitra Feedback Form</h2>
+    <p>We value your feedback! Please share your experience with your ASHA worker.</p>
+
+    <form id="feedbackForm">
+      <label for="name">Patient Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+      <label for="ashaName">ASHA Worker Name:</label>
+      <input type="text" id="ashaName" name="ashaName" placeholder="Enter ASHA worker name" required>
+
+      <label for="village">Village / Area:</label>
+      <input type="text" id="village" name="village" placeholder="Enter your village or area">
+
+      <label>Rate Your Experience:</label>
+      <div class="rating" id="rating">
+        <span>😞</span>
+        <span>😐</span>
+        <span>🙂</span>
+        <span>😊</span>
+        <span>😍</span>
+      </div>
+
+      <label for="feedback">Your Feedback:</label>
+      <textarea id="feedback" name="feedback" rows="4" placeholder="Write your feedback..." required></textarea>
+
+      <button type="submit">Submit Feedback</button>
+    </form>
+
+    <div class="thank-you" id="thankYouMsg">
+      <h3>🎉 Thank you for your valuable feedback!</h3>
+      <p>Your response helps us improve maternal care in your area.</p>
+      <button><a style="text-decoration: none;" href="FEADBACK2.HTML">view Feedback</a></button>
+     
+    </div>
+  </div>
+
+  <script>
+    const ratingSpans = document.querySelectorAll('#rating span');
+    let selectedRating = '';
+
+    ratingSpans.forEach(span => {
+      span.addEventListener('click', () => {
+        ratingSpans.forEach(s => s.classList.remove('active'));
+        span.classList.add('active');
+        selectedRating = span.textContent;
+      });
+    });
+
+    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const feedbackData = {
+        name: document.getElementById('name').value,
+        ashaName: document.getElementById('ashaName').value,
+        village: document.getElementById('village').value,
+        rating: selectedRating,
+        feedback: document.getElementById('feedback').value,
+        date: new Date().toLocaleString()
+      };
+
+      // Get old data from localStorage or create new array
+      let feedbackList = JSON.parse(localStorage.getItem('matrumitraFeedbacks')) || [];
+      feedbackList.push(feedbackData);
+
+      // Save back to localStorage
+      localStorage.setItem('matrumitraFeedbacks', JSON.stringify(feedbackList));
+
+      this.style.display = 'none';
+      document.getElementById('thankYouMsg').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Login - MatruMitra</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-r from-purple-50 to-white flex items-center justify-center">
+  <div class="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="p-6">
+      <h1 class="text-2xl font-bold text-gray-800 mb-2">Admin Login</h1>
+      <p class="text-sm text-gray-500 mb-6">Sign in with your administrator credentials</p>
+
+      <form id="admin-login-form" class="space-y-4">
+        <div>
+          <label for="admin-id" class="block text-sm font-medium text-gray-700">Admin ID <span class="text-red-500">*</span></label>
+          <input id="admin-id" name="adminId" type="text" required class="mt-1 block w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400" placeholder="Enter Admin ID">
+        </div>
+        <div>
+          <label for="admin-password" class="block text-sm font-medium text-gray-700">Admin Password <span class="text-red-500">*</span></label>
+          <input id="admin-password" name="adminPassword" type="password" required class="mt-1 block w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400" placeholder="Enter Admin Password">
+        </div>
+
+        <div class="flex items-center justify-between">
+          <a href="HOMEPAGE.HTML" class="text-sm text-gray-600 hover:underline">Back to Home</a>
+          <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">Sign in</button>
+        </div>
+      </form>
+
+      <div id="admin-error" class="mt-4 text-sm text-red-600 hidden">Invalid credentials</div>
+
+      <div class="mt-6 text-xs text-gray-500">
+        <p>Demo credentials for testing:</p>
+        <p>Admin ID: <b>ADMIN001</b></p>
+        <p>Password: <b>admin123</b></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const adminId = document.getElementById('admin-id').value.trim();
+      const adminPassword = document.getElementById('admin-password').value;
+      const err = document.getElementById('admin-error');
+
+      // Reset error message
+      err.classList.add('hidden');
+
+      // Validate all fields are filled
+      if (!adminId || !adminPassword) {
+        err.textContent = 'Admin ID and Password are required';
+        err.classList.remove('hidden');
+        return;
+      }
+
+      // Demo validation - you can replace this with your actual admin credentials check
+      if (adminId === 'ADMIN001' && adminPassword === 'admin123') {
+        sessionStorage.setItem('isAdmin', 'true');
+        sessionStorage.setItem('adminId', adminId);
+        // redirect to admin dashboard
+        window.location.href = 'AdminDashboard.HTML';
+      } else {
+        err.textContent = 'Invalid Admin ID or Password';
+        err.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

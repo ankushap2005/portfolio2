@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About MatruMitra</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #fff8f8;
+      color: #333;
+    }
+
+    .top-bar{padding:20px}
+    .back-btn{display:inline-block;margin-bottom:18px;padding:10px 14px;background:#2e5da5;color:#fff;border-radius:8px;text-decoration:none;box-shadow:0 8px 20px rgba(46,93,165,0.15)}
+
+    .about-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      padding: 40px 8%;
+    }
+
+    .about-text {
+      flex: 1;
+      max-width: 550px;
+    }
+
+    .about-text h1 {
+      color: #e85a70;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .about-text p {
+      line-height: 1.8;
+      font-size: 1.1rem;
+      color: #555;
+      text-align: justify;
+    }
+
+    .about-image {
+      flex: 1;
+      text-align: center;
+    }
+
+    .about-image img {
+      max-width: 420px;
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .mission {
+      background-color: #ffe9ec;
+      padding: 40px 8%;
+      text-align: center;
+    }
+
+    .mission h2 {
+      color: #d94b63;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .mission p {
+      font-size: 1.1rem;
+      color: #555;
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 900px) {
+      .about-container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .about-text, .about-image {
+        max-width: 100%;
+      }
+
+      .about-text h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a class="back-btn" href="HOMEPAGE.HTML">◀ Back to Home</a>
+  </div>
+
+  <section class="about-container">
+    <div class="about-text">
+      <h1>About <span style="color:#ff6b81;">MatruMitra</span></h1>
+      <p>
+        <b>MatruMitra</b> is a digital companion designed to support pregnant women, 
+        especially in rural areas, by connecting them with ASHA workers and healthcare services. 
+        Our goal is to ensure that every mother receives timely care, awareness, and digital record tracking 
+        for a healthy pregnancy journey.
+        <br><br>
+        The platform enables ASHA workers to manage maternal data efficiently — even in areas 
+        with low internet connectivity — through secure offline storage and syncing options. 
+        It’s not just a system; it’s a caring friend walking with every mother towards a safe and 
+        joyful motherhood.
+      </p>
+    </div>
+
+    <div class="about-image">
+      <img src="images.jpg" alt="Mother care illustration">
+    </div>
+  </section>
+
+  <section class="mission">
+    <h2>Our Mission 🌼</h2>
+    <p>
+      To empower ASHA workers and pregnant women with technology that bridges healthcare gaps, 
+      promotes timely intervention, and strengthens maternal health monitoring. 
+      MatruMitra stands for compassion, trust, and digital transformation in maternal care.
+    </p>
+  </section>
+
+</body>
+</html>
+</html>
